@@ -26,7 +26,7 @@
             overflow: hidden;
         }
 
-        /* SIDEBAR CONTAINER */
+        /* SIDEBAR PANEL */
         aside {
             width: 240px;
             background-color: var(--bg-sidebar);
@@ -35,6 +35,7 @@
             justify-content: space-between;
             padding: 20px 15px;
             border-right: 1px solid #231d42;
+            box-sizing: border-box;
         }
 
         .brand-header h1 {
@@ -87,13 +88,14 @@
             color: var(--accent-hover);
         }
 
-        /* MAIN CONTENT ROW */
+        /* DISPLAY VIEWPORT FRAME */
         main {
             flex-grow: 1;
             padding: 30px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
 
         .view-section {
@@ -106,7 +108,7 @@
         h2 { font-size: 28px; margin-top: 0; }
         .sub-header { color: var(--text-muted); margin-bottom: 25px; }
 
-        /* INPUT GRIDS AND FORMS */
+        /* UNIFORM CONTROL COMPONENT FIELDS */
         .form-group {
             margin-bottom: 15px;
             display: flex;
@@ -138,10 +140,11 @@
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
+            max-width: max-content;
         }
         .action-btn:hover { background-color: var(--accent-hover); }
 
-        /* MARKETPLACE GRID */
+        /* ITEM RENDERING TILES */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -189,7 +192,7 @@
         }
         .game-title { font-size: 16px; font-weight: bold; margin: 0; }
         
-        .buy-btn {
+        .buy-btn, .dl-link-btn {
             background: var(--green-gradient);
             color: white;
             text-decoration: none;
@@ -200,6 +203,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            display: block;
         }
         .delete-btn {
             background: #c0392b;
@@ -223,18 +227,18 @@
 </head>
 <body>
 
-    <!-- SIDE PANEL NAVIGATION -->
+    <!-- NAVIGATION BAR LAYER -->
     <aside>
         <div>
             <div class="brand-header">
                 <h1>Luco</h1>
                 <span>Next-Gen Indie Client</span>
             </div>
-            <nav>
-                <button class="nav-btn active" onclick="switchTab('store')">Store</button>
-                <button class="nav-btn" onclick="switchTab('library')">My Library</button>
-                <button class="nav-btn" onclick="switchTab('publish')">Publish Game</button>
-                <button class="nav-btn" onclick="switchTab('auth')">Account Settings</button>
+            <nav id="sidebarNavigation">
+                <button class="nav-btn active" data-target="store">Store</button>
+                <button class="nav-btn" data-target="library">My Library</button>
+                <button class="nav-btn" data-target="publish">Publish Game</button>
+                <button class="nav-btn" data-target="auth">Account Settings</button>
             </nav>
         </div>
         
@@ -242,27 +246,27 @@
         </div>
     </aside>
 
-    <!-- VIEWS CONTEXT -->
+    <!-- CONTENT MODULE RENDERS -->
     <main>
-        <!-- STORE CONTAINER -->
+        <!-- STORE PANEL -->
         <div id="storeView" class="view-section active">
             <h2>Store</h2>
             <div class="sub-header">Discover your next adventure</div>
             <div class="games-grid" id="storeGrid"></div>
         </div>
 
-        <!-- LIBRARY CONTAINER -->
+        <!-- INVENTORY SYSTEM -->
         <div id="libraryView" class="view-section">
             <h2>My Library</h2>
             <div class="sub-header">Your personal instant inventory</div>
             <div class="games-grid" id="libraryGrid"></div>
         </div>
 
-        <!-- PUBLISH SUITE -->
+        <!-- SUBMISSION MANAGEMENT UNIT -->
         <div id="publishView" class="view-section">
             <h2>Publish Project</h2>
             <div class="sub-header">List your creative build global platform entirely free</div>
-            <div id="publishFormContainer">
+            <div>
                 <div class="form-group">
                     <label>Game Title *</label>
                     <input type="text" id="pubTitle" placeholder="e.g. Neon Shadows">
@@ -275,7 +279,7 @@
                     </select>
                 </div>
                 <div class="form-group checkbox-group">
-                    <input type="checkbox" id="pubComingSoon" onchange="togglePublishRequirements(this.checked)">
+                    <input type="checkbox" id="pubComingSoon">
                     <label for="pubComingSoon">Mark project configuration as 'Coming Soon'</label>
                 </div>
                 <div id="fileUploadRequirements">
@@ -288,24 +292,24 @@
                         <input type="text" id="pubFile" placeholder="https://google.com">
                     </div>
                 </div>
-                <button class="action-btn" onclick="handlePublishSubmit()">Publish to Client</button>
+                <button class="action-btn" id="submitPublishBtn">Publish to Client</button>
             </div>
         </div>
 
-        <!-- AUTHENTICATION VIEW -->
+        <!-- SYSTEM ACCESS ACCOUNT SETUP -->
         <div id="authView" class="view-section">
             <h2>Account Access</h2>
             <div class="sub-header">Create an identity instance to manage transactions</div>
-            <div id="authForm">
+            <div>
                 <div class="form-group">
                     <label>Unique User Handle</label>
                     <input type="text" id="authUsername" placeholder="Enter name...">
                 </div>
-                <button class="action-btn" onclick="handleAccountRegistration()">Register Profile</button>
+                <button class="action-btn" id="submitAuthBtn">Register Profile</button>
             </div>
         </div>
     </main>
 
     <script>
-        // CLIENT LIFECYCLE MANAGEMENT ENGINE
+        // BACKEND STORAGE EMULATION ROUTINES
         let activeUser = JSON.parse(localStorage.getItem('luco_user') || 'null');
